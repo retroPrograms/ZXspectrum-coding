@@ -1,5 +1,49 @@
-	org 50000
+	org 50000 ;c350
 
+MAIN
+	;call init
+	call decither
+	ret
+
+
+decither
+	ld ix, cipher
+	ld iy, key
+	ld c, 3
+ciLoop
+	ld a, (ix+0)
+	cp 255
+	jr z, ciEnd
+	ld b, (iy+0)
+	xor b
+
+	push ix
+	push iy
+	push bc
+
+	rst 16
+
+	pop bc
+	pop iy
+	pop ix
+
+	inc ix
+	inc iy
+	dec c
+
+	jr z,ciKeyreset
+	jr ciLoop
+ciEnd
+	ret
+ciKeyReset
+	ld iy, key
+	ld c,3
+	jr ciLoop
+	
+
+
+
+init
 ; open channel to upper screen
  	ld a, 2
  	call 5633
@@ -14,14 +58,7 @@
  	ld de, banner2
  	ld bc, eobanr2-banner2
  	call 8252
-
-	ld hl, cypher
-	ld a,(hl)
-	rst 16
-
-	ld hl, key
-	ld a,(hl)
-	rst 16
+	
 	
 	ret
 
@@ -29,7 +66,7 @@
 
 	banner1 defb 22, 3, 10, "XOR Cypher"
 	eobanr1 equ $
-	banner2 defb 22, 4, 5, "Project Euler Q59"
+	banner2 defb 22, 4, 5, "Project Euler Q59",13
 	eobanr2 equ $
 
 	key     defb 'e','x','p'  
