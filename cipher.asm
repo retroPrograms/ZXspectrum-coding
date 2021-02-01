@@ -5,17 +5,29 @@ MAIN
 	call decither
 	ret
 
+display
+	ld (hl), 36
+	ld hl,counter
+	inc (hl)
+	ld de, buffer
+	ld bc,(counter)
+	
+	call 8252
+	ret
+
+
 
 decither
-	ld a,2
+	ld a,1
 	call 5633
 	ld hl, buffer
 	ld ix, cipher
 	ld iy, key
+	
 	ld c, 3
 ciLoop
 	ld a, (ix+0)
-	cp 400
+	cp 255
 	jr z, ciEnd
 	ld b, (iy+0)
 	xor b
@@ -23,8 +35,13 @@ ciLoop
 	push ix
 	push iy
 	push bc
+	push hl
+	
+	ld hl, counter
+	inc (hl)
 
 	;rst 16
+	pop hl
 	ld (hl), a
 	inc hl
 	pop bc
@@ -39,14 +56,20 @@ ciLoop
 	jr ciLoop
 ciEnd
 	ld (hl), 36
-	ld de, buffer
-	ld bc,255
-	call 8252
+	ld hl,counter
+	inc (hl)
+	call display
 	ret
 ciKeyReset
 	ld iy, key
 	ld c,3
 	jr ciLoop
+lineReturn
+	ld a,1
+	call 5633
+	ld hl, colCount
+	ld (hl), 30
+	
 	
 
 
@@ -70,7 +93,10 @@ init
 	
 	ret
 
+	counter defw 0
 
+	colCount defb 30
+	
 
 	banner1 defb 22, 3, 10, "XOR Cypher"
 	eobanr1 equ $
