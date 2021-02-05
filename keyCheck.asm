@@ -2,16 +2,15 @@
 
 	ld a,2	;upper screen
 	call 5633	;open channel
+	include "getKey.asm"
 
-check_key
-	ld hl,23560 ; LAST K system variable.
-	ld (hl),0 ; put null value there.
-loop 	ld a,(hl) ; new value of LAST K.
-	cp 0 ; is it still zero?
-	jr z,loop ; yes, so no key pressed.
-	cp ' ' ;is it space?
-	jr z, exit_app 	;yes then exit
-	rst 16	;display character
-	jr check_key  ;loop again
+key_loop
+	call get_key ;wait for key press
+	rst 16
+	cp 32  ;is it space key
+	jr z,exit_app  ;yes then exit
+	;rst 16  ;print character
+	jr key_loop
+	
 exit_app
-	ret ; key was pressed.
+	ret 
