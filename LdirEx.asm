@@ -1,6 +1,29 @@
 ScreenSize equ &17E8   
 
 org &c350
+
+	call write_screen
+	call get_key
+	call clear_key
+	call display_key
+ret
+
+
+clear_key
+	push af
+	ld a,0
+	ld hl,&4000
+	ld bc,0
+cl_loop:
+	ld (hl),a
+	inc hl
+	inc c
+	;incomplete
+	jr nz,cl_loop
+	pop af
+ret
+
+write_screen:
 	ld hl,&0000		;HL is the source memory address 
 					
 
@@ -9,8 +32,32 @@ org &c350
 
 	ld bc,ScreenSize	;BC is the bytecount 
 					
-
+	
 	ldir			;LDIR copies a byte from (HL) to (DE), then increments HL and DE, finally it decreases BC, and repeats until BC=0
-				
-				
 ret
+
+	
+display_key:
+	push af
+	ld a,2  ;top left corner
+	call 5633 
+	pop af
+	rst 16
+	
+ret				
+				
+
+
+get_key
+	push hl ;save hl
+	ld hl,23560 ; LAST K system variable.
+	ld (hl),0 ; put null value there.
+loop_key 	
+	ld a,(hl) ; new value of LAST K.
+	cp 0 ; is it still zero?
+	jr z,loop_key ; yes, so no key pressed.
+	pop hl ;restore hl
+	;rst 16
+	ret ;return key in a
+
+
