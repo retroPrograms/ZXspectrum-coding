@@ -13,12 +13,17 @@ clear_key
 	push af
 	ld a,0
 	ld hl,&4000
-	ld bc,0
+	ld bc,&17E0
 cl_loop:
+	ld a,0
 	ld (hl),a
 	inc hl
-	inc c
-	;incomplete
+	dec bc
+	ld a,c
+	cp 0
+	jr nz,cl_loop
+	ld a,b
+	cp 0
 	jr nz,cl_loop
 	pop af
 ret
