@@ -6,6 +6,22 @@ org &c350
 	call get_key
 	call clear_key
 	call display_key
+	call screen_color
+ret
+
+screen_color:
+	ld ix,&5800 	;768 &300 &5b00
+	ld bc,&300
+sc_loop:
+	ld a,&5C
+	ld (ix+0),a
+	inc ix
+	dec bc
+	ld a,0
+	cp c
+	jr nz,sc_loop
+	cp b
+	jr nz,sc_loop
 ret
 
 
