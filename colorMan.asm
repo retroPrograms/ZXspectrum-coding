@@ -5,13 +5,14 @@ colorSize 	equ 768
 	org &8000
 
 	call clear_screen
+	ld iy,&5800+16
 	call drawMan
 	ret
 
 
 drawMan:
 	ld ix,colorMan						
-	ld iy,&5800
+	;ld iy,&5800
 	ld de,25
 	ld b,12
 dm_loop2:
@@ -30,11 +31,11 @@ ret
 
 clear_screen:
 	push af
-	ld a,69
+	ld a,0
 	ld hl,&4000
 	ld bc,&17E0
 cl_loop:
-	ld a,69
+	ld a,0
 	ld (hl),a
 	inc hl
 	dec bc
