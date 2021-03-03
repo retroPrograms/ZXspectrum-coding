@@ -18,16 +18,22 @@ regSave:
 	ld (hl),c
 	inc hl
 	ld (hl),b
-	inc hl
+	inc hl    ;bc
 	pop bc
 	ld (hl), e
 	inc hl
 	ld (hl), d
-	inc hl
+	inc hl	  ;de
 	ld (hl), c
 	inc hl
 	ld (hl), b
+	inc hl	   ;hl
+	push af
+	pop bc
+	ld (hl), c
 	inc hl
+	ld (hl), b
+	inc hl	;af
 	
 	ret
 
