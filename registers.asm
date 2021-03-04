@@ -7,9 +7,29 @@ MAIN
 	ld hl, mesg
 	call printString
 	call newLine
-	ld hl, reg_a
-	call printString
 	call regSave
+	call dispRegs
+	ret
+
+dispHex:
+	;ld a,(hl)
+	ld a,10
+	cp 9
+	jr nc,isHex
+	add a, 48
+	rst 16
+	jr hexEnd
+isHex:
+	add a, 54
+	rst 16
+hexEnd:
+	ret
+
+dispRegs:
+	ld hl,reg_bc
+	call printString
+	ld hl,reg_all
+	call dispHex
 	ret
 
 regSave:
@@ -73,7 +93,14 @@ init
 
 
 mesg 	defb "Z80 registers",255
-reg_a   defb "A: ",255
+
+reg_bc   defb "BC: ",255
+
+reg_de   defb "DE: ",255
+
+reg_hl   defb "HL: ",255
+
+reg_af   defb "AF: ",255
 
 reg_all defb 0,0, 0,0 ,0,0 ,0,0 ;
 
