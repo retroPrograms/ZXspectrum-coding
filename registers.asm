@@ -13,14 +13,14 @@ MAIN
 
 dispHex:
 	;ld a,(hl)
-	ld a,10
-	cp 9
+	ld a,15
+	cp 10
 	jr nc,isHex
 	add a, 48
 	rst 16
 	jr hexEnd
 isHex:
-	add a, 54
+	add a, 55
 	rst 16
 hexEnd:
 	ret
