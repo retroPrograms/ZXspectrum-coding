@@ -13,14 +13,14 @@ MAIN
 
 dispHex:
 	;ld a,(hl)
-	ld a,15
+	ld a,9
 	cp 10
-	jr nc,isHex
-	add a, 48
+	jr c,isHex
+	add a, 55
 	rst 16
 	jr hexEnd
 isHex:
-	add a, 55
+	add a, 61;55
 	rst 16
 hexEnd:
 	ret
@@ -29,6 +29,7 @@ dispRegs:
 	ld hl,reg_bc
 	call printString
 	ld hl,reg_all
+	ld a,(hl)
 	call dispHex
 	ret
 
