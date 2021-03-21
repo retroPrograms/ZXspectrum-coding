@@ -1,8 +1,22 @@
 org &8000
-
+	ld de,31
+start_loop:
 	call drawSides
+	call pause
+	;call pause
+	call unDrawSides
+	dec e
+	jr nz, start_loop
 	ret
 
+pause:
+	ld bc,&ffff
+pause_loop:
+	dec c
+	jr nz,pause_loop
+	dec b
+	jr nz,pause_loop
+	ret
 
 drawSides
 	ld ix,screen_map
@@ -13,7 +27,7 @@ main_loop:
 	;ld hl,&4000
 	;call drawLine
 	ld (hl),255
-	ld de,200
+	;ld de,31
 	add hl,de
 	ld (hl),255
 	inc ix
@@ -23,6 +37,27 @@ main_loop:
 	dec b
 	jr nz,main_loop
 	ret
+
+unDrawSides
+	ld ix,screen_map
+	ld b,190
+main_loopU:
+	ld l,(ix+0)
+	ld h,(ix+1)
+	;ld hl,&4000
+	;call drawLine
+	ld (hl),0
+	;ld de,31
+	add hl,de
+	ld (hl),0
+	inc ix
+	inc ix
+	dec b
+	ld a,b
+	dec b
+	jr nz,main_loopU
+	ret
+
 
 
 screen_map:
