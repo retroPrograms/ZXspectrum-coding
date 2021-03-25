@@ -26,10 +26,10 @@ main_loop:
 	ld h,(ix+1)
 	;ld hl,&4000
 	;call drawLine
-	ld (hl),255
+	ld (hl),1
 	;ld de,31
 	add hl,de
-	ld (hl),255
+	ld (hl),1
 	inc ix
 	inc ix
 	dec b
