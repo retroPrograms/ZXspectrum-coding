@@ -7,7 +7,41 @@ start_loop:
 	call unDrawSides
 	dec e
 	jr nz, start_loop
+	call drawTops
+	;call pause
+	;call unDrawTops
 	ret
+
+drawTops:
+	ld ix,screen_map
+	ld c,19
+	ld a,255
+dt_loopO
+	ld b,31
+dt_loop:
+	ld (ix+0),a
+	inc ix
+	dec b
+	jp nz,dt_loop
+	dec c
+	jp nz,dt_loopO
+	ret
+
+undrawTops:
+	ld ix,screen_map
+	ld c,191
+	ld a,0
+dt_loopUN:
+	ld b,31
+dt_loop1:
+	ld (ix+0),a
+	dec b
+	jp nz,dt_loop1
+	dec c
+	jp nz,dt_loopUN
+	ret
+
+
 
 pause:
 	ld bc,&ffff
